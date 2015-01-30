@@ -85,10 +85,10 @@ This project makes it easier to get non-secret environmental data for scripts, b
     bash$ curl https://cosmodrome/metadata/docker_build
     marshyski/centos
 
-   #from DEV server
+    #from DEV server
     bash$ curl https://cosmodrome/metadata/dns
     192.168.1.1
 
-   #from QA server
+    #from QA server
     bash$ curl https://cosmodrome/metadata/dns
     10.142.1.1
