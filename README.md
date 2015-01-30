@@ -58,13 +58,15 @@ This project makes it easier to get non-secret environmental data for scripts, b
 
 **Curl Examples:**
 
+    #from DEV server
     bash$ curl https://cosmodrome/metadata/env
      'app_s3': 's3://s3.amazonaws.com/marshyskicom_dev/deploy.sh',
      'app_dev_branch': 'development',
      'app_git': 'https://github.com/marshyski/marshyski.com.git',
      'puppet': '192.168.1.15',
      'dns': '192.168.1.1'
-
+    
+    #from any server
     bash$ curl https://cosmodrome/metadata/common
      'python_ver': '2.7.8',
      'softlayer_os': 'REDHAT_LATEST_65',
@@ -79,8 +81,14 @@ This project makes it easier to get non-secret environmental data for scripts, b
      'docker_build': 'marshyski/centos',
      'docker_gold': 'centos7.0.1406'
 
-    bash$ curl https://cosmodrome/metadata/build_img
+    #from any server
+    bash$ curl https://cosmodrome/metadata/docker_build
     marshyski/centos
 
+   #from DEV server
     bash$ curl https://cosmodrome/metadata/dns
     192.168.1.1
+
+   #from QA server
+    bash$ curl https://cosmodrome/metadata/dns
+    10.142.1.1
