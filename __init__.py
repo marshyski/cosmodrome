@@ -2,7 +2,7 @@
 
 from OpenSSL import SSL
 from flask import Flask, request, jsonify, make_response, abort
-from flask_sslify import SSLify
+from flask_limiter import Limiter
 import re, yaml, os.path
 
 config = 'config.yaml'
@@ -11,6 +11,7 @@ common = yamldir + 'common.yaml'
 
 config_yaml = yaml.load(file('config.yaml', 'r'))
 if config_yaml['key']:
+   from flask_sslify import SSLify
    context = SSL.Context(SSL.SSLv23_METHOD)
    context.use_privatekey_file(config_yaml['key'])
    context.use_certificate_file(config_yaml['cert'])
@@ -18,6 +19,8 @@ if config_yaml['key']:
    sslify = SSLify(app, subdomains=True)
 else:
    app = Flask(__name__, static_url_path = "")
+
+limiter = Limiter(app, global_limits=["2880 per day", "120 per hour"])
 
 @app.errorhandler(404)
 def not_found(error):
@@ -27,7 +30,7 @@ def not_found(error):
 def bad_request(error):
     return make_response(jsonify({"error": "Unknown Environment, Missing YAML File"}), 400)
 
-@app.route('/', methods = ['GET'])
+@app.route('/', methods = ["GET"])
 def api_doc():
     """API Endpoint Reference"""
     func_list = {}
