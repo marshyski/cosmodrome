@@ -95,7 +95,7 @@ This project makes it easier to get non-secret environmental data for scripts, b
 
 **Setup:**
 
-*Generating an SSL cert is optional but recommended as your data is important.*
+*Generating a SSL cert is optional, but recommended as your data is important.*
 
 Generate a self-signed SSL cert and key (dev/test purposes only):
 
