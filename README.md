@@ -111,4 +111,4 @@ Defaults:
 
  - API rate limit is set globally for all endpoints for requests from remote addresses 2880 per day, 120 per hour
 
-**Generate your environment YAML files in data.**
+**Generate your environment YAML files in the data directory.**
