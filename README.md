@@ -95,6 +95,8 @@ This project makes it easier to get non-secret environmental data for scripts, b
 
 **Setup:**
 
+*Generating an SSL cert is optional but recommended as your data is important.*
+
 Generate a self-signed SSL cert and key (dev/test purposes only):
 
     openssl req -subj '/CN=cosmodrome.com/O=cosmodrome/C=US' -new -newkey rsa:2048 -days 365 -nodes -sha256 -keyout cosmodrome.key -out cosmodrome.cert
