@@ -5,12 +5,14 @@ from flask import Flask, request, jsonify, make_response, abort
 from flask_sslify import SSLify
 import re, yaml, os.path
 
-context = SSL.Context(SSL.SSLv23_METHOD)
-context.use_privatekey_file('cosmodrome.key')
-context.use_certificate_file('cosmodrome.cert')
-
+config = 'config.yaml'
 yamldir = 'data/'
-defaultconfig = yamldir + 'common.yaml'
+common = yamldir + 'common.yaml'
+
+config_yaml = yaml.load(file('config.yaml', 'r'))
+context = SSL.Context(SSL.SSLv23_METHOD)
+context.use_privatekey_file(config_yaml['key'])
+context.use_certificate_file(config_yaml['cert'])
 
 app = Flask(__name__, static_url_path = "")
 sslify = SSLify(app, subdomains=True)
@@ -25,8 +27,8 @@ def bad_request(error):
 
 @app.route('/metadata/common', methods=["GET"])
 def common_metadata():
-    if os.path.isfile(defaultconfig):
-        return str(yaml.load(file(defaultconfig, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
+    if os.path.isfile(common):
+        return str(yaml.load(file(common, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
     else:
         abort(400)
 
@@ -46,11 +48,11 @@ def get_metadata(metadata):
     if os.path.isfile(yamlconfig) and metadata in open(yamlconfig).read():
         allmetadata = yaml.load(file(yamlconfig, 'r'))
         return(str(allmetadata[metadata]))
-    if os.path.isfile(defaultconfig) and metadata in open(defaultconfig).read():
-        allmetadata = yaml.load(file(defaultconfig, 'r'))
+    if os.path.isfile(common) and metadata in open(common).read():
+        allmetadata = yaml.load(file(common, 'r'))
         return(str(allmetadata[metadata]))
     else:
         abort(404)
 
 if __name__ == '__main__':
-    app.run(host = "0.0.0.0", port = 8888, debug = False, ssl_context=context)
+    app.run(host = "0.0.0.0", port = config_yaml['port'], debug = False, ssl_context=context)
