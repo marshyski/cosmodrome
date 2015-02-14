@@ -92,3 +92,17 @@ This project makes it easier to get non-secret environmental data for scripts, b
     #from QA server
     bash$ curl https://cosmodrome/metadata/dns
     10.142.1.1
+
+**Setup:**
+
+Generate a self-signed SSL cert and key (dev/test purposes only):
+
+    openssl req -subj '/CN=cosmodrome.com/O=cosmodrome/C=US' -new -newkey rsa:2048 -days 365 -nodes -sha256 -keyout cosmodrome.key -out cosmodrome.cert
+
+config.yaml:
+
+ - port (define port you want cosmodrome to run as) 
+ - cert (define your SSL cert file location) 
+ - key (define your SSL key file location)
+
+**Generate your environment YAML files in data.**
