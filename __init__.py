@@ -50,7 +50,13 @@ def common_metadata():
 @app.route('/metadata/env', methods=["GET"])
 def all_metadata():
     """All Environment Data Defined By Incoming Request"""
-    ipaddy = re.match(r'(\d+\.\d+)',request.remote_addr).groups()[0]
+    twoocts = re.match(r'(\d+\.\d+)',request.remote_addr).groups()[0]
+    threeocts = re.match(r'(\d+\.\d+\.\d+)',request.remote_addr).groups()[0]
+    yamlconfig = yamldir + threeocts + '.yaml'
+    if os.path.isfile(yamlconfig):
+       ipaddy = threeocts
+    else:
+       ipaddy = twoocts
     yamlconfig = yamldir + ipaddy + '.yaml'
     if os.path.isfile(yamlconfig):
         return str(yaml.load(file(yamlconfig, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
@@ -60,7 +66,13 @@ def all_metadata():
 @app.route('/metadata/<string:metadata>', methods=["GET"])
 def get_metadata(metadata):
     """Requested Key Data by Defined Environment"""
-    ipaddy = re.match(r'(\d+\.\d+)',request.remote_addr).groups()[0]
+    twoocts = re.match(r'(\d+\.\d+)',request.remote_addr).groups()[0]
+    threeocts = re.match(r'(\d+\.\d+\.\d+)',request.remote_addr).groups()[0]
+    yamlconfig = yamldir + threeocts + '.yaml'
+    if os.path.isfile(yamlconfig):
+       ipaddy = threeocts
+    else:
+       ipaddy = twoocts
     yamlconfig = yamldir + ipaddy + '.yaml'
     if os.path.isfile(yamlconfig) and metadata in open(yamlconfig).read():
         allmetadata = yaml.load(file(yamlconfig, 'r'))
