@@ -3,7 +3,7 @@ YAML backed metadata API to retrieve data for multiple infrastructure, build and
 
 *Abstracting Data from Stacks*
 ----------------------------
-This project makes it easier to get non-secret environmental data for scripts, builds and deployments.  Making scripting easier removing logic for environmental awareness based on first two octets of an IP address.
+This project makes it easier to get non-secret environmental data for scripts, builds and deployments.  Making scripting easier removing logic for environmental awareness based on first two or three octets of an IP address.
 
 **Sweet Benefits:**
 
@@ -40,6 +40,8 @@ This project makes it easier to get non-secret environmental data for scripts, b
     app_dev_branch: qa
     app_s3: s3://s3.amazonaws.com/marshyskicom_qa/deploy.sh
     
+*data/10.142.5.yaml*  **QA subnet** or **Isolated environment within QA**
+
 *data/common.yaml*  **Common Everywhere**
 
     amieast: ami-cffr455
