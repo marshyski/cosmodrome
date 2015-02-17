@@ -84,7 +84,10 @@ def get_metadata(metadata):
         abort(404)
 
 if __name__ == '__main__':
-    if config_yaml['key']:
-    	app.run(host = "0.0.0.0", port = config_yaml['port'], debug = False, ssl_context=context)
-    else:
-	app.run(host = "0.0.0.0", port = config_yaml['port'], debug = False)
+    if config_yaml['key'] and config_yaml['host']:
+    	app.run(host = config_yaml['host'], port = config_yaml['port'], debug = False, ssl_context=context)
+
+    if config_yaml['host']:
+        app.run(host = config_yaml['host'], port = config_yaml['port'], debug = False)
+
+    app.run(host = "127.0.0.1", port = config_yaml['port'], debug = False)
