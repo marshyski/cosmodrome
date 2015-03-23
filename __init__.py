@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 from OpenSSL import SSL
 from flask import Flask, request, jsonify, make_response, abort
