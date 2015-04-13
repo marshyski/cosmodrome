@@ -3,7 +3,7 @@
 from OpenSSL import SSL
 from flask import Flask, request, jsonify, make_response, abort
 from flask_limiter import Limiter
-import re, yaml, os.path, glob
+import re, yaml, os.path, glob, difflib
 
 config = 'config.yaml'
 yamldir = 'data/'
@@ -85,9 +85,9 @@ def get_metadata(metadata):
         return(str(allmetadata[metadata]))
     if os.path.isfile(yamlconfig):
         return str(yaml.load(file(yamlconfig, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
-    for yamlconfigs in yamlfiles:
-        if yamlconfigs.startswith(yamldir + metadata):
-           return str(yaml.load(file(yamlconfigs, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
+    newyamlconfig = sorted(yamlfiles, key=lambda x: difflib.SequenceMatcher(None, x, yamldir + metadata).ratio(), reverse=True)[0]
+    if newyamlconfig:
+        return str(yaml.load(file(newyamlconfig, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
     abort(404)
 
 @app.route('/metadata/<string:host>/<string:metadata>', methods=['GET'])
@@ -98,10 +98,10 @@ def host_metadata(host, metadata):
     if os.path.isfile(yamlconfig) and metadata in open(yamlconfig).read():
        allmetadata = yaml.load(file(yamlconfig, 'r'))
        return(str(allmetadata[metadata]))
-    for yamlconfigs in yamlfiles:
-       if yamlconfigs.startswith(yamldir + host):
-          allmetadata = yaml.load(file(yamlconfigs, 'r'))
-          return(str(allmetadata[metadata]))
+    newyamlconfig = sorted(yamlfiles, key=lambda x: difflib.SequenceMatcher(None, x, yamldir + host).ratio(), reverse=True)[0]
+    if newyamlconfig and metadata in open(newyamlconfig).read():
+       allmetadata = yaml.load(file(newyamlconfig, 'r'))
+       return(str(allmetadata[metadata]))
     abort(404)
 
 if __name__ == '__main__':
