@@ -30,7 +30,7 @@ def not_found(error):
 def bad_request(error):
     return make_response(jsonify({"error": "Unknown Environment, Missing YAML File"}), 400)
 
-@app.route('/', methods = ["GET"])
+@app.route('/', methods = ['GET'])
 def api_doc():
     """API Endpoint Reference"""
     func_list = {}
@@ -39,7 +39,7 @@ def api_doc():
             func_list[rule.rule] = app.view_functions[rule.endpoint].__doc__
     return jsonify(func_list)
 
-@app.route('/metadata/common', methods=["GET"])
+@app.route('/metadata/common', methods=['GET'])
 def common_metadata():
     """Common Data for All Environments Defined"""
     if os.path.isfile(common):
@@ -47,9 +47,9 @@ def common_metadata():
     else:
         abort(400)
 
-@app.route('/metadata/env', methods=["GET"])
+@app.route('/metadata/env', methods=['GET'])
 def all_metadata():
-    """All Environment Data Defined By Incoming Request"""
+    """All Environment Data Defined by Incoming Request"""
     twoocts = re.match(r'(\d+\.\d+)',request.remote_addr).groups()[0]
     threeocts = re.match(r'(\d+\.\d+\.\d+)',request.remote_addr).groups()[0]
     yamlconfig = yamldir + threeocts + '.yaml'
@@ -63,22 +63,36 @@ def all_metadata():
     else:
         abort(400)
 
-@app.route('/metadata/<string:metadata>', methods=["GET"])
+@app.route('/metadata/<string:metadata>', methods=['GET'])
 def get_metadata(metadata):
-    """Requested Key Data by Defined Environment"""
-    twoocts = re.match(r'(\d+\.\d+)',request.remote_addr).groups()[0]
-    threeocts = re.match(r'(\d+\.\d+\.\d+)',request.remote_addr).groups()[0]
-    yamlconfig = yamldir + threeocts + '.yaml'
-    if os.path.isfile(yamlconfig):
-       ipaddy = threeocts
-    else:
-       ipaddy = twoocts
-    yamlconfig = yamldir + ipaddy + '.yaml'
+    """Requested Value Data by Defined Environment or Host"""
+    yamlconfig = yamldir + metadata + '.yaml'
+    if not os.path.isfile(yamlconfig):
+       twoocts = re.match(r'(\d+\.\d+)',request.remote_addr).groups()[0]
+       threeocts = re.match(r'(\d+\.\d+\.\d+)',request.remote_addr).groups()[0]
+       yamlconfig = yamldir + threeocts + '.yaml'
+       if os.path.isfile(yamlconfig):
+          ipaddy = threeocts
+       else:
+          ipaddy = twoocts
+       yamlconfig = yamldir + ipaddy + '.yaml'
     if os.path.isfile(yamlconfig) and metadata in open(yamlconfig).read():
         allmetadata = yaml.load(file(yamlconfig, 'r'))
         return(str(allmetadata[metadata]))
     if os.path.isfile(common) and metadata in open(common).read():
         allmetadata = yaml.load(file(common, 'r'))
+        return(str(allmetadata[metadata]))
+    if os.path.isfile(yamlconfig):
+        return str(yaml.load(file(yamlconfig, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
+    else:
+        abort(404)
+
+@app.route('/metadata/<string:host>/<string:metadata>', methods=['GET'])
+def host_metadata(host, metadata):
+    """Requested Value Data by Hostname"""
+    yamlconfig = yamldir + host + '.yaml'
+    if os.path.isfile(yamlconfig) and metadata in open(yamlconfig).read():
+        allmetadata = yaml.load(file(yamlconfig, 'r'))
         return(str(allmetadata[metadata]))
     else:
         abort(404)
