@@ -73,6 +73,12 @@ Example lookup:
     current_rel: 1.0.0
     next_rel: 1.0.1
     
+*data/aws-lx-web-team.yaml* **for host grouping or one host** *data/aws-lx-web-team-001.yaml*
+
+    purpose: web
+    role: nginx
+    profile: basic_server
+    app_name: team
 
 **Curl Examples:**
 
@@ -113,16 +119,17 @@ Example lookup:
     
     
 **Bash Script Example:**
+
     #from client server
     #!/bin/bash
     # GET values by hostname
     HOSTNAME=`hostname`
-    PURPOSE=`curl -sf https://cosmodrome/metadata/$HOSTNAME/purpose`
+    PURPOSE=`curl -sf https://cosmodrome/metadata/$HOSTNAME/role`
     APPNAME=`curl -sf https://cosmodrome/metadata/$HOSTNAME/appname`
     # GET S3 target from common.yaml
-    S3=$(curl -sf https://cosmodrome/metadata/app_s3)
+    S3=`curl -sf https://cosmodrome/metadata/app_s3`
 
-    yum install -y $PURPOSE
+    yum install -y $ROLE
     curl -O $S3 | tar -zxvf
     mv -rf $APPNAME* /opt/
     service $PURPOSE restart
