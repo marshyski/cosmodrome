@@ -1,10 +1,10 @@
 # cosmodrome  ``beta``
-YAML backed metadata/tag API to retrieve data for multiple infrastructure, server, build and runtime environments.
+YAML backed metadata/tag API to retrieve data for multiple infrastructure, servers, build and runtime environments.
 
 
 *Abstracting Data from Stacks*
 ----------------------------
-This project makes it easier to get non-secret environmental metadata, or host tags for scripts, builds and deployments.  Making scripting easier removing logic for environmental awareness based on first two/three IP octets, hostname and closet match of a hostname.
+This project makes it easier to get non-secret environmental/common metadata, or host tags for scripts, builds and deployments.  Making scripting easier removing logic for environmental awareness based on first two/three IP octets, hostname and closet match of a hostname.
 
 Example lookup:
 
@@ -16,6 +16,7 @@ Example lookup:
     aws-lx-web-team-001.yaml
     192.168.1.yaml
     192.168.yaml
+    common.yaml
     aws-lx-web-team.yaml
 
 
@@ -109,6 +110,22 @@ Example lookup:
     #from QA server
     bash$ curl https://cosmodrome/metadata/dns
     10.142.1.1
+    
+    
+**Bash Script Example:**
+    #from client server
+    #!/bin/bash
+    # GET values by hostname
+    HOSTNAME=`hostname`
+    PURPOSE=`curl -sf https://cosmodrome/metadata/$HOSTNAME/purpose`
+    APPNAME=`curl -sf https://cosmodrome/metadata/$HOSTNAME/appname`
+    # GET S3 target from common.yaml
+    S3=$(curl -sf https://cosmodrome/metadata/app_s3)
+
+    yum install -y $PURPOSE
+    curl -O $S3 | tar -zxvf
+    mv -rf $APPNAME* /opt/
+    service $PURPOSE restart
 
 **Setup:**
 
