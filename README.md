@@ -4,7 +4,7 @@ YAML backed metadata/tag API to retrieve data for multiple infrastructure, serve
 
 *Abstracting Data from Stacks*
 ----------------------------
-This project makes it easier to get non-secret environmental/common metadata, or host tags for scripts, builds and deployments.  Making scripting easier removing logic for environmental awareness based on first two/three IP octets, hostname and closet match of a hostname.
+This project makes it easier to get non-secret environmental/common metadata, or host tags for scripts, builds and deployments.  Making scripting easier removing logic for environmental awareness based on first two/three IP octets, hostname and closest match of a hostname.
 
 Example lookup:
 
