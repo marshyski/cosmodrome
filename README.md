@@ -1,25 +1,40 @@
 # cosmodrome  ``beta``
-YAML backed metadata API to retrieve data for multiple infrastructure, build and runtime environments. 
+YAML backed metadata/tag API to retrieve data for multiple infrastructure, server, build and runtime environments.
+
 
 *Abstracting Data from Stacks*
 ----------------------------
-This project makes it easier to get non-secret environmental data for scripts, builds and deployments.  Making scripting easier removing logic for environmental awareness based on first two or three octets of an IP address.
+This project makes it easier to get non-secret environmental metadata, or host tags for scripts, builds and deployments.  Making scripting easier removing logic for environmental awareness based on first two/three IP octets, hostname and closet match of a hostname.
+
+Example lookup:
+
+    IP: 192.168.1.20
+    Hostname: aws-lx-web-team-001
+
+    Logically will look for key/value data in this order:
+
+    aws-lx-web-team-001.yaml
+    192.168.1.yaml
+    192.168.yaml
+    aws-lx-web-team.yaml
+
 
 **Sweet Benefits:**
 
 - Agentless
 - Registerless
 - Reduce source lines of code
-- Common and environmental data separated by one API
+- Common, environmental and host data separated by one API
+- Desiring a cloud-like tagging method for servers
 - Easier to build facts for your Configuration Management tools
-- Easier to manage multiple environments in different Cloud Providers/VPCs
+- Easier to manage multiple environments in different datacenters, Cloud Providers/VPCs
 
 **This Is for You If You:**
 
 - Have tons of infrastructure everywhere
 - Constantly build new environments or proof-of-concepts
 - Want one script to build all images for Cloud, Kickstart or Containers
-- Think it would be nice to bring multiple dev/ops teams together with data
+- Want a way to tag baremetal or any server for that matter
 - Want to use multiple Configurations Management tools by centralizing data in one place
 
 **YAML Examples:**
