@@ -3,7 +3,7 @@
 from OpenSSL import SSL
 from flask import Flask, request, jsonify, make_response, abort
 from flask_limiter import Limiter
-import re, yaml, os.path
+import re, yaml, os.path, glob
 
 config = 'config.yaml'
 yamldir = 'data/'
@@ -66,6 +66,7 @@ def all_metadata():
 @app.route('/metadata/<string:metadata>', methods=['GET'])
 def get_metadata(metadata):
     """Requested Value Data by Defined Environment or Host"""
+    yamlfiles = glob.glob(yamldir + '*.yaml')
     yamlconfig = yamldir + metadata + '.yaml'
     if not os.path.isfile(yamlconfig):
        twoocts = re.match(r'(\d+\.\d+)',request.remote_addr).groups()[0]
@@ -84,18 +85,24 @@ def get_metadata(metadata):
         return(str(allmetadata[metadata]))
     if os.path.isfile(yamlconfig):
         return str(yaml.load(file(yamlconfig, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
-    else:
-        abort(404)
+    for yamlconfigs in yamlfiles:
+        if yamlconfigs.startswith(yamldir + metadata):
+           return str(yaml.load(file(yamlconfigs, 'r'))).replace(',', ',\n').replace('{', ' ').replace('}', '\n')
+    abort(404)
 
 @app.route('/metadata/<string:host>/<string:metadata>', methods=['GET'])
 def host_metadata(host, metadata):
-    """Requested Value Data by Hostname"""
+    """Requested Value Data by Host"""
+    yamlfiles = glob.glob(yamldir + '*.yaml')
     yamlconfig = yamldir + host + '.yaml'
     if os.path.isfile(yamlconfig) and metadata in open(yamlconfig).read():
-        allmetadata = yaml.load(file(yamlconfig, 'r'))
-        return(str(allmetadata[metadata]))
-    else:
-        abort(404)
+       allmetadata = yaml.load(file(yamlconfig, 'r'))
+       return(str(allmetadata[metadata]))
+    for yamlconfigs in yamlfiles:
+       if yamlconfigs.startswith(yamldir + host):
+          allmetadata = yaml.load(file(yamlconfigs, 'r'))
+          return(str(allmetadata[metadata]))
+    abort(404)
 
 if __name__ == '__main__':
     if config_yaml['key'] and config_yaml['host']:
