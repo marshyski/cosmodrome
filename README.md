@@ -1,5 +1,5 @@
 # cosmodrome  ``beta``
-YAML backed metadata/tag API to retrieve data for multiple infrastructure, servers, build and runtime environments.
+YAML backed metadata/tag API to retrieve data for multiple infrastructure, servers, builds and runtime environments.
 
 
 *Abstracting Data from Stacks*
