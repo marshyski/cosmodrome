@@ -148,8 +148,7 @@ config.yaml:
  - port (define port you want cosmodrome to run as)
  - cert (define your SSL cert file location)
  - key (define your SSL key file location)
- - request_limit (define API rate limit, default is '7200 per hour')
- # http://flask-limiter.readthedocs.org/en/stable/
+ - request_limit (define API rate limit, default is '7200 per hour') http://flask-limiter.readthedocs.org/en/stable/
 
 Defaults:
 
