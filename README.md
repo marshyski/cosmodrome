@@ -1,4 +1,4 @@
-# cosmodrome  ``beta``
+# cosmodrome
 YAML backed metadata/tag API to retrieve data for multiple infrastructure, servers, builds and runtime environments.
 
 
@@ -47,7 +47,7 @@ Example lookup:
     app_git: https://github.com/marshyski/marshyski.com.git
     app_dev_branch: development
     app_s3: s3://s3.amazonaws.com/marshyskicom_dev/deploy.sh
-    
+
 *data/10.142.yaml*  **QA** or **Cloud B**
 
     puppet: 10.142.1.15
@@ -55,7 +55,7 @@ Example lookup:
     app_git: https://github.com/marshyski/marshyski.com.git
     app_dev_branch: qa
     app_s3: s3://s3.amazonaws.com/marshyskicom_qa/deploy.sh
-    
+
 *data/10.142.5.yaml*  **QA subnet** or **Isolated environment within QA**
 
 *data/common.yaml*  **Common Everywhere**
@@ -72,7 +72,7 @@ Example lookup:
     docker_test: marshyski/test
     current_rel: 1.0.0
     next_rel: 1.0.1
-    
+
 *data/aws-lx-web-team.yaml* **for host grouping or one host** *data/aws-lx-web-team-001.yaml*
 
     purpose: web
@@ -89,7 +89,7 @@ Example lookup:
      'app_git': 'https://github.com/marshyski/marshyski.com.git',
      'puppet': '192.168.1.15',
      'dns': '192.168.1.1'
-    
+
     #from any server
     bash$ curl https://cosmodrome/metadata/common
      'python_ver': '2.7.8',
@@ -116,8 +116,8 @@ Example lookup:
     #from QA server
     bash$ curl https://cosmodrome/metadata/dns
     10.142.1.1
-    
-    
+
+
 **Bash Script Example:**
 
     #from client server
@@ -144,9 +144,12 @@ Generate a self-signed SSL cert and key (dev/test purposes only):
 
 config.yaml:
 
- - port (define port you want cosmodrome to run as) 
- - cert (define your SSL cert file location) 
+ - host (define listening address of host)
+ - port (define port you want cosmodrome to run as)
+ - cert (define your SSL cert file location)
  - key (define your SSL key file location)
+ - request_limit (define API rate limit, default is '7200 per hour')
+ # http://flask-limiter.readthedocs.org/en/stable/
 
 Defaults:
 

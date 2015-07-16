@@ -1,5 +1,5 @@
 Flask==0.10.1
-Flask-SSLify==0.1.4
+Flask-SSLify==0.1.5
 PyYAML==3.11
-Flask-Limiter==0.7.4
-pyOpenSSL==0.14
+Flask-Limiter==0.7.9
+pyOpenSSL==0.15.1

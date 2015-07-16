@@ -3,7 +3,11 @@
 from OpenSSL import SSL
 from flask import Flask, request, jsonify, make_response, abort
 from flask_limiter import Limiter
-import re, yaml, os.path, glob, difflib
+import re
+import yaml
+import os.path
+import glob
+import difflib
 
 config = 'config.yaml'
 yamldir = 'data/'
@@ -20,7 +24,14 @@ if config_yaml['key']:
 else:
    app = Flask(__name__, static_url_path = "")
 
-limiter = Limiter(app, global_limits=["2880 per day", "120 per hour"])
+print config_yaml['request_limit']
+
+if config_yaml['request_limit']:
+    request_limit = config_yaml['request_limit']
+else:
+    request_limit = '7200 per hour'
+
+limiter = Limiter(app, global_limits=[request_limit])
 
 @app.errorhandler(404)
 def not_found(error):
