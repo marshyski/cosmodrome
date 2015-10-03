@@ -53,5 +53,5 @@ docs/_build/
 # PyBuilder
 target/
 
-cosmodrome.key
-cosmodrome.cert
+*.key
+*.cert
