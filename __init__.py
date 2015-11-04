@@ -117,7 +117,7 @@ def host_metadata(host, metadata):
 
 if __name__ == '__main__':
     if config_yaml['key'] and config_yaml['host']:
-    	app.run(host = config_yaml['host'], port = config_yaml['port'], debug = False, ssl_context=context)
+    	app.run(host = config_yaml['host'], port = config_yaml['port'], debug = False, ssl_context=context, threaded=True)
 
     if config_yaml['host']:
         app.run(host = config_yaml['host'], port = config_yaml['port'], debug = False)
