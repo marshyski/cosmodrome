@@ -140,7 +140,7 @@ Example lookup:
 
 Generate a self-signed SSL cert and key (dev/test purposes only):
 
-    openssl req -subj '/CN=cosmodrome.com/O=cosmodrome/C=US' -new -newkey rsa:2048 -days 365 -nodes -sha256 -keyout cosmodrome.key -out cosmodrome.cert
+    openssl req -subj '/CN=cosmodrome.com/O=cosmodrome/C=US' -new -newkey rsa:2048 -sha256 -days 365 -nodes -x509 -keyout cosmodrome.key -out cosmodrome.cert
 
 config.yaml:
 
